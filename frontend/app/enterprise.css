@@ -422,11 +422,8 @@
 .choice-grid button svg { opacity: .2; }
 .choice-grid button.active,.channel-options button.active { border: 2px solid var(--ink); background: #e9efff; color: var(--blue); box-shadow: 2px 2px 0 var(--ink); }
 .choice-grid button.active svg { opacity: 1; }
-.schedule-preference { display: grid; grid-template-columns: 125px 1fr; gap: 14px; margin-top: 17px; }
-.schedule-preference > input { border: 1px solid #ccd2d7; border-radius: 11px; background: white; padding: 0 12px; font-weight: 900; }
-.schedule-preference > div { display: grid; grid-template-columns: repeat(7,1fr); gap: 5px; }
-.schedule-preference button { aspect-ratio: 1; border: 1px solid #ccd2d7; border-radius: 10px; background: white; cursor: pointer; font-size: 8px; font-weight: 900; }
-.schedule-preference button.active { border: 2px solid var(--ink); background: var(--blue); color: white; }
+.schedule-preference { display: flex; margin-top: 17px; }
+.schedule-preference > time { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; max-width: 100%; border: 1px solid #ccd2d7; border-radius: 11px; background: white; padding: 10px 16px; font-size: 16px; color: var(--ink); white-space: nowrap; }
 .digest-options { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-top: 17px; }
 .digest-options button { display: grid; gap: 4px; border: 1px solid #ccd2d7; border-radius: 12px; background: white; padding: 14px; cursor: pointer; text-align: left; }
 .digest-options button.active { border: 2px solid var(--ink); background: var(--lime); box-shadow: 2px 2px 0 var(--ink); }
@@ -525,7 +522,7 @@
   .discovery-option { min-height: 94px; grid-template-rows: auto; }
   .discovery-footer { align-items: stretch; flex-direction: column; gap: 10px; }
   .discovery-footer button { justify-content: center; }
-  .schedule-preference { grid-template-columns: 1fr; }.schedule-preference > input { min-height: 42px; }
+  .schedule-preference > time { width: 100%; }
   .evidence-drawer { padding: 20px 14px; }.evidence-score { grid-template-columns: 1fr; }.claim-review article { grid-template-columns: 25px 1fr; }.claim-review article em { grid-column: 2; justify-self: start; }
   .team-summary,.launch-readiness > div { grid-template-columns: 1fr 1fr; }
   .member-table > header { display: none; }.member-table > article { grid-template-columns: 1fr auto; }.member-table article > span { grid-column: 1; }.member-table article > b { grid-column: 2; grid-row: 1; }
