@@ -119,8 +119,10 @@ internal fun selectWelcomePreviewTargets(subscriptions: List<PushSubscription>):
     return WelcomePreviewTargets(operator, newSubscribers)
 }
 
-internal val allDeliveryWeekdays: Set<Int> = (0..6).toSet()
+// Stored weekday numbers follow the browser convention: Sunday=0, Monday=1.
+internal val allDeliveryWeekdays: Set<Int> = (1..5).toSet()
 internal val allDeliveryWeekdaysValue: String = allDeliveryWeekdays.joinToString(",")
+internal fun isBriefingWeekday(date: LocalDate): Boolean = date.dayOfWeek.value in 1..5
 internal val fixedDeliveryTime: LocalTime = LocalTime.of(7, 30)
 internal val lastDeliveryTime: LocalTime = LocalTime.of(8, 0)
 internal val fixedFinalizationTime: LocalTime = LocalTime.of(6, 0)
@@ -152,7 +154,7 @@ internal fun deliveryIsDue(current: LocalTime, scheduled: LocalTime = fixedDeliv
     !current.isBefore(scheduled) && !current.isAfter(lastDeliveryTime)
 
 internal fun deliveryFallbackIsRequired(briefingDate: LocalDate?, today: LocalDate, current: LocalTime): Boolean =
-    briefingDate != today && deliveryIsDue(current)
+    isBriefingWeekday(today) && briefingDate != today && deliveryIsDue(current)
 
 internal fun parseFinalizationTime(value: String): LocalTime =
     runCatching { LocalTime.parse(value.trim()) }.getOrDefault(fixedFinalizationTime)
@@ -274,7 +276,7 @@ class WebPushService(
         )
     }
 
-    @Scheduled(cron = "0 * * * * *")
+    @Scheduled(cron = "0 * * * * MON-FRI", zone = "Asia/Seoul")
     fun deliverScheduledBriefings() {
         deliverDueBriefings()
     }
@@ -283,6 +285,9 @@ class WebPushService(
     fun deliverDueBriefings(): PushDeliverySummary {
         if (!isConfigured()) return PushDeliverySummary("PUSH_DISABLED", 0, 0, 0, 0, "웹 푸시가 설정되지 않았습니다.")
         val today = LocalDate.now(ZoneId.of("Asia/Seoul"))
+        if (!isBriefingWeekday(today)) {
+            return PushDeliverySummary("WEEKEND_SKIPPED", repository.countByActiveTrue().toInt(), 0, 0, 0, "주말에는 정기 브리핑을 발송하지 않습니다.")
+        }
         val currentTime = OffsetDateTime.now(ZoneId.of("Asia/Seoul")).toLocalTime()
         var briefing = runCatching { briefingService.latest() }.getOrNull()
         if (deliveryFallbackIsRequired(briefing?.briefingDate, today, currentTime)) {
@@ -642,9 +647,9 @@ class WebPushService(
         val storyCount = briefing?.stories?.size ?: 0
         val title = "아침결 · 내일부터 이렇게 도착해요"
         val body = if (storyCount > 0) {
-            "매일 오전 7시 30분, 전날 핵심 뉴스 ${storyCount}건을 카드로 정리해드려요. 눌러서 오늘 브리핑을 확인해보세요."
+            "평일 오전 7시 30분, 전날 핵심 뉴스 ${storyCount}건을 카드로 정리해드려요. 눌러서 오늘 브리핑을 확인해보세요."
         } else {
-            "매일 오전 7시 30분, 전날 꼭 알아야 할 뉴스를 검토해 카드로 정리해드려요."
+            "평일 오전 7시 30분, 전날 꼭 알아야 할 뉴스를 검토해 카드로 정리해드려요."
         }
 
         var delivered = 0
@@ -842,15 +847,16 @@ class DefaultDeliveryTimeMigration(private val repository: PushSubscriptionRepos
     @Transactional
     override fun run(args: ApplicationArguments) {
         val migrated = repository.findAllByActiveTrue().filter {
-            it.timezone != "Asia/Seoul" || it.deliveryHour != fixedDeliveryTime.hour || it.deliveryMinute != fixedDeliveryTime.minute
+            it.timezone != "Asia/Seoul" || it.deliveryHour != fixedDeliveryTime.hour || it.deliveryMinute != fixedDeliveryTime.minute || it.weekdays != allDeliveryWeekdaysValue
         }
         migrated.forEach {
             it.timezone = "Asia/Seoul"
             it.deliveryHour = fixedDeliveryTime.hour
             it.deliveryMinute = fixedDeliveryTime.minute
+            it.weekdays = allDeliveryWeekdaysValue
             it.updatedAt = OffsetDateTime.now()
         }
         if (migrated.isNotEmpty()) repository.saveAll(migrated)
-        logger.info("Migrated {} push subscription(s) to the fixed 07:30 Asia/Seoul delivery", migrated.size)
+        logger.info("Migrated {} push subscription(s) to weekday 07:30 Asia/Seoul delivery", migrated.size)
     }
 }

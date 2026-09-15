@@ -44,7 +44,7 @@ export function BriefingApp() {
       .then((data: Briefing) => {
         setBriefing(data);
         setLoadError(false);
-        setNotice(data.productionReady ? "" : "현재는 사용법을 보여드리는 화면 예시입니다. 준비된 뉴스는 매일 오전 7시 30분에 보내드립니다.");
+        setNotice(data.productionReady ? "" : "현재는 사용법을 보여드리는 화면 예시입니다. 준비된 뉴스는 평일 오전 7시 30분에 보내드립니다.");
       })
       .catch((error: unknown) => {
         if (error instanceof Error && error.name === "AbortError") return;
@@ -88,7 +88,7 @@ export function BriefingApp() {
       <section className="landing-hero" id="top">
         <div className="landing-hero-copy">
           <span className="landing-kicker"><Sparkles size={15} /> 바쁜 사람을 위한 아침 뉴스 브리핑</span>
-          <h1>어제 뉴스를,<br /><em>매일 아침 한 번에.</em></h1>
+          <h1>어제 뉴스를,<br /><em>평일 아침 한 번에.</em></h1>
           <p>가장 중요한 3건부터 전체 흐름까지. 한 줄 결론, 쉬운 이해 포인트, 원문 출처를 한 화면에 정리해 드립니다.</p>
           <div className="landing-hero-actions">
             <SubscriptionTrigger className="landing-primary"><BellRing size={18} /> 무료 알림 받기</SubscriptionTrigger>
@@ -112,7 +112,7 @@ export function BriefingApp() {
       </section>
 
       <section className="landing-proof" aria-label="서비스 핵심 특징">
-        <div><strong>07:30</strong><span>매일 아침 정규 도착</span></div>
+        <div><strong>07:30</strong><span>평일 아침 정규 도착</span></div>
         <div><strong>TOP 3</strong><span>먼저 보는 핵심 뉴스</span></div>
         <div><strong>10+</strong><span>하루의 주요 흐름</span></div>
         <div><strong>0원</strong><span>회원가입 없이 무료</span></div>
@@ -122,12 +122,12 @@ export function BriefingApp() {
         <div className="landing-section-heading">
           <span>HOW IT WORKS</span>
           <h2>아침결은 이렇게 도착해요</h2>
-          <p>설정은 한 번만. 그다음부터는 전날의 중요한 흐름을 매일 아침 가볍게 확인하세요.</p>
+          <p>설정은 한 번만. 그다음부터는 전날의 중요한 흐름을 평일 아침 가볍게 확인하세요.</p>
         </div>
         <div className="how-grid">
           <article><div className="how-icon mint"><Clock3 /></div><small>01 · 핵심만</small><h3>중요한 흐름을 골라 드려요</h3><p>정책·경제·금융부터 문화·스포츠·e스포츠까지, 하루를 시작하기 전에 알아야 할 소식을 분야별로 담습니다.</p></article>
           <article><div className="how-icon violet"><BookOpen /></div><small>02 · 읽기 쉽게</small><h3>배경부터 의미까지 풀어드려요</h3><p>낯선 용어와 배경은 일상어로 풀고, 무엇이 달라지는지와 관련 원문을 함께 보여드립니다.</p></article>
-          <article><div className="how-icon yellow"><Smartphone /></div><small>03 · 매일 아침</small><h3>오전 7시 30분에 받아요</h3><p>휴대폰 알림을 누르면 큰 글자로 정리된 뉴스 전용 화면이 바로 열립니다.</p></article>
+          <article><div className="how-icon yellow"><Smartphone /></div><small>03 · 평일 아침</small><h3>오전 7시 30분에 받아요</h3><p>휴대폰 알림을 누르면 큰 글자로 정리된 뉴스 전용 화면이 바로 열립니다. 주말에는 알림을 쉬어요.</p></article>
         </div>
       </section>
 
@@ -163,7 +163,7 @@ export function BriefingApp() {
           <details open><summary>아침결은 무료인가요?</summary><p>네. 현재 회원가입과 결제 없이 무료로 이용할 수 있으며, 도네이트·유료 구독 기능도 사용하지 않습니다.</p></details>
           <details><summary>어떤 뉴스가 오나요?</summary><p>정책·경제·사회·국제·테크·생활·문화·스포츠·e스포츠에서 하루를 시작하기 전에 알아야 할 중요한 소식을 골라 다음 날 아침에 보내드립니다.</p></details>
           <details><summary>아이폰에서도 알림을 받을 수 있나요?</summary><p>네. Safari에서 아침결을 홈 화면에 추가한 뒤 홈 화면 아이콘으로 열고 ‘이 기기에 알림 등록’을 누르면 됩니다.</p></details>
-          <details><summary>언제 받아볼 수 있나요?</summary><p>한 번 알림을 등록하면 요일을 따로 고르지 않아도 매일 오전 7시 30분에 받아볼 수 있습니다.</p></details>
+          <details><summary>언제 받아볼 수 있나요?</summary><p>한 번 알림을 등록하면 평일 오전 7시 30분(한국 시간)에 받아볼 수 있습니다. 토요일과 일요일에는 알림을 보내지 않습니다.</p></details>
         </div>
       </section>
 

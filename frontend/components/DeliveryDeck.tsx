@@ -23,7 +23,7 @@ export function DeliveryDeck({ briefing }: Props) {
     <section className="delivery-studio subscription-studio" id="delivery-deck">
       <div className="landing-section-heading delivery-heading-clean">
         <span>FREE SUBSCRIPTION</span>
-        <h2>한 번 등록하면 매일 도착해요</h2>
+        <h2>한 번 등록하면 평일 도착해요</h2>
         <p>회원가입도, 앱스토어 설치도 필요 없습니다. 이 기기의 알림만 한 번 허용해 주세요.</p>
       </div>
 
@@ -71,7 +71,7 @@ export function BriefingCardPreview({ card }: { card: BriefingCard }) {
   if (card.kind === "cover") {
     return (
       <article className="delivery-card cover-card" style={{ "--tenant-accent": card.brand.accent, backgroundImage: `linear-gradient(180deg, rgba(7,53,37,.08), rgba(7,45,32,.92)), url(${assetBase}/briefing-card-bg.png)` } as CSSProperties}>
-        <span className="delivery-badge">매일 아침 · 어제의 뉴스</span>
+        <span className="delivery-badge">평일 아침 · 어제의 뉴스</span>
         <div className="cover-brand">{card.brand.name}</div>
         <div className="cover-copy"><h3>어제의 소음은 빼고,<br />오늘 필요한 뉴스만.</h3><p>{card.briefing.lead}</p></div>
         <div className="cover-stats"><strong>{card.briefing.stories.length}개 핵심 뉴스</strong><span>원문 함께 제공 · 약 {card.briefing.readMinutes}분</span></div>

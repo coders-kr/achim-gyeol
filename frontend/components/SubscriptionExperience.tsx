@@ -164,12 +164,12 @@ export function SubscriptionExperience({ onNotice }: { onNotice: (message: strin
         <div className="device-readiness"><Smartphone size={19} /><div><strong>현재 기기 확인</strong><span>{deviceLabel}</span></div></div>
 
         {!quickSubscribe && <div className="modal-setting-grid">
-          <div className="modal-time-field"><span><Clock3 size={15} /> 매일 고정 도착</span><div className="fixed-delivery-time"><strong>매일 오전 7:30</strong><small>중요한 소식만 읽기 쉽게</small></div></div>
+          <div className="modal-time-field"><span><Clock3 size={15} /> 평일 고정 도착</span><div className="fixed-delivery-time"><strong>평일 오전 7:30</strong><small>주말에는 알림을 쉬어요</small></div></div>
         </div>}
 
         {!quickSubscribe && <div className="modal-arrival-preview">
           <div className="push-app-icon"><BellRing size={18} /></div>
-          <div><strong>아침결 · 오늘 알아야 할 뉴스가 도착했어요</strong><span>매일 오전 7:30 · 핵심 내용과 알아야 할 것</span></div>
+          <div><strong>아침결 · 오늘 알아야 할 뉴스가 도착했어요</strong><span>평일 오전 7:30 · 핵심 내용과 알아야 할 것</span></div>
         </div>}
 
         {!iphoneSafariSetup && <section className="interest-survey" aria-labelledby="interest-survey-title">

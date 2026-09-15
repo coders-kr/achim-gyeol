@@ -11,8 +11,8 @@ const socialImageUrl = new URL("og-v2.png", `${siteUrl.replace(/\/$/, "")}/`).to
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "아침결 — 어제 뉴스를 매일 아침 한 번에",
-  description: "전날의 중요한 뉴스를 읽기 쉽게 정리해 매일 오전 7시 30분 알림으로 전하는 무료 뉴스 브리핑.",
+  title: "아침결 — 어제 뉴스를 평일 아침 한 번에",
+  description: "전날의 중요한 뉴스를 읽기 쉽게 정리해 평일 오전 7시 30분 알림으로 전하는 무료 뉴스 브리핑.",
   manifest: `${basePath}/manifest.webmanifest`,
   icons: {
     icon: [{ url: `${basePath}/mail-icon.svg`, type: "image/svg+xml" }],
@@ -22,13 +22,13 @@ export const metadata: Metadata = {
   applicationName: "아침결",
   appleWebApp: { capable: true, title: "아침결", statusBarStyle: "default" },
   openGraph: {
-    title: "아침결 — 어제 뉴스를 매일 아침 한 번에",
+    title: "아침결 — 어제 뉴스를 평일 아침 한 번에",
     description: "출처를 확인한 전날의 중요 뉴스를 모바일 브리핑으로 받아보세요.",
     images: [{ url: socialImageUrl, width: 1792, height: 896, alt: "아침결 뉴스 브리핑" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "아침결 — 어제 뉴스를 매일 아침 한 번에",
+    title: "아침결 — 어제 뉴스를 평일 아침 한 번에",
     description: "출처를 확인한 전날의 중요 뉴스를 모바일 브리핑으로 받아보세요.",
     images: [socialImageUrl],
   },

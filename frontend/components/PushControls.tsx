@@ -89,7 +89,7 @@ export function PushControls({ deliveryTime, onNotice, onSubscriptionChange, onB
       window.localStorage.setItem(serverSubscriptionKey, subscription.endpoint);
       setSubscribed(true);
       onSubscriptionChange?.(true);
-      const message = `등록 완료! 확인 알림을 보냈어요. 매일 ${deliveryTime}에 오늘 필요한 뉴스를 보내드려요.`;
+      const message = `등록 완료! 확인 알림을 보냈어요. 평일 ${deliveryTime}에 오늘 필요한 뉴스를 보내드려요.`;
       setFeedback(message);
       onNotice(message);
     } catch (error) {

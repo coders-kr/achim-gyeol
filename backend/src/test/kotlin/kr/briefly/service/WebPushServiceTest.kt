@@ -28,9 +28,13 @@ class WebPushServiceTest {
     }
 
     @Test
-    fun `regular delivery covers every day of the week`() {
-        assertThat(allDeliveryWeekdays).containsExactly(0, 1, 2, 3, 4, 5, 6)
-        assertThat(allDeliveryWeekdaysValue).isEqualTo("0,1,2,3,4,5,6")
+    fun `regular delivery covers Monday through Friday only`() {
+        assertThat(allDeliveryWeekdays).containsExactly(1, 2, 3, 4, 5)
+        assertThat(allDeliveryWeekdaysValue).isEqualTo("1,2,3,4,5")
+        assertThat(isBriefingWeekday(LocalDate.of(2026, 9, 18))).isTrue()
+        assertThat(isBriefingWeekday(LocalDate.of(2026, 9, 19))).isFalse()
+        assertThat(isBriefingWeekday(LocalDate.of(2026, 9, 20))).isFalse()
+        assertThat(isBriefingWeekday(LocalDate.of(2026, 9, 21))).isTrue()
     }
 
     @Test
@@ -46,12 +50,13 @@ class WebPushServiceTest {
 
     @Test
     fun `오늘자 브리핑이 없어도 정시 발송 구간에는 안내판을 만든다`() {
-        val today = java.time.LocalDate.of(2026, 8, 30)
+        val today = java.time.LocalDate.of(2026, 8, 31)
 
         assertThat(deliveryFallbackIsRequired(null, today, LocalTime.of(7, 30))).isTrue()
         assertThat(deliveryFallbackIsRequired(today.minusDays(1), today, LocalTime.of(7, 45))).isTrue()
         assertThat(deliveryFallbackIsRequired(today, today, LocalTime.of(7, 30))).isFalse()
         assertThat(deliveryFallbackIsRequired(null, today, LocalTime.of(7, 29))).isFalse()
+        assertThat(deliveryFallbackIsRequired(null, today.minusDays(1), LocalTime.of(7, 30))).isFalse()
     }
 
     @Test

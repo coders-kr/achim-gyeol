@@ -23,7 +23,7 @@ class OperationalReadinessMonitor(
     private val logger = LoggerFactory.getLogger(javaClass)
     private val zone = ZoneId.of("Asia/Seoul")
 
-    @Scheduled(cron = "0 45 6 * * *", zone = "Asia/Seoul")
+    @Scheduled(cron = "0 45 6 * * MON-FRI", zone = "Asia/Seoul")
     @Transactional
     fun checkBriefingReadiness() {
         val today = LocalDate.now(zone)
@@ -41,7 +41,7 @@ class OperationalReadinessMonitor(
         else logger.error("Morning briefing is not ready at 06:45 KST because no verified cards exist: date={}, reasons={}", today, coverage.reasons.joinToString())
     }
 
-    @Scheduled(cron = "0 20 7 * * *", zone = "Asia/Seoul")
+    @Scheduled(cron = "0 20 7 * * MON-FRI", zone = "Asia/Seoul")
     @Transactional
     fun checkDeliveryReadiness() {
         val today = LocalDate.now(zone)

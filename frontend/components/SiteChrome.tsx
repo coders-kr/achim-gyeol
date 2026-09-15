@@ -8,7 +8,7 @@ export function SiteHeader({ context = "무료 알림 받기" }: { context?: str
       <Link className="site-brand" href="/">
         <i aria-hidden="true"><Mail size={15} strokeWidth={2.4} /></i>
         <strong>아침결</strong>
-        <span>매일 아침, 어제의 뉴스</span>
+        <span>평일 아침, 어제의 뉴스</span>
       </Link>
       <nav aria-label="주요 메뉴">
         <div className="site-header-links">
@@ -38,7 +38,7 @@ export function SiteFooter() {
     <footer className="enterprise-footer">
       <div>
         <strong>아침결</strong>
-        <p>어제 쏟아진 뉴스에서 오늘 알아야 할 흐름만 골라, 매일 아침 한 번에 전합니다.</p>
+        <p>어제 쏟아진 뉴스에서 오늘 알아야 할 흐름만 골라, 평일 아침 한 번에 전합니다.</p>
       </div>
       <nav aria-label="정책 문서">
         <Link href="/trust">서비스 원칙</Link>

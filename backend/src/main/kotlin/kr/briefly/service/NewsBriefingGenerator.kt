@@ -780,9 +780,10 @@ class NewsGenerationScheduler(private val generationJob: MorningGenerationJob) {
      * 브리핑을 강제로 새로 만들어, 늦게 올라온 기사와 일시적인 공급원 오류를
      * 다음 라운드에서 보완할 수 있게 한다.
      */
-    @Scheduled(cron = "\${app.pipeline.collection-cron:0 0 0-5 * * *}", zone = "Asia/Seoul")
+    @Scheduled(cron = "\${app.pipeline.collection-cron:0 0 0-5 * * MON-FRI}", zone = "Asia/Seoul")
     fun collectHourly() {
         val briefingDate = LocalDate.now(ZoneId.of("Asia/Seoul"))
+        if (!isBriefingWeekday(briefingDate)) return
         submit(briefingDate, force = true, phase = "hourly collection")
     }
 
@@ -790,9 +791,10 @@ class NewsGenerationScheduler(private val generationJob: MorningGenerationJob) {
      * 07:30 발송 전에 마지막으로 전체 수집·검증·편집을 수행한다. 발송기는
      * 이 라운드 이후 저장된 브리핑만 정기 발송 대상으로 인정한다.
      */
-    @Scheduled(cron = "\${app.pipeline.finalization-cron:0 0 6 * * *}", zone = "Asia/Seoul")
+    @Scheduled(cron = "\${app.pipeline.finalization-cron:0 0 6 * * MON-FRI}", zone = "Asia/Seoul")
     fun finalizeMorningBriefing() {
         val briefingDate = LocalDate.now(ZoneId.of("Asia/Seoul"))
+        if (!isBriefingWeekday(briefingDate)) return
         submit(briefingDate, force = true, phase = "finalization")
     }
 

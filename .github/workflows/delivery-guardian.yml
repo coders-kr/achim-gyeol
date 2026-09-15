@@ -6,12 +6,13 @@ on:
     # replaces the older guardian and keeps the sleeping backend awake until
     # the exact 07:30 dispatch. Multiple starts are safe because recovery is
     # persisted and deduplicated per edition and device.
-    - cron: "37 18 * * *"
-    - cron: "7 19 * * *"
-    - cron: "37 19 * * *"
-    - cron: "7 20 * * *"
-    - cron: "37 20 * * *"
-    - cron: "7 21 * * *"
+    # UTC Sunday–Thursday corresponds to KST Monday–Friday mornings.
+    - cron: "37 18 * * 0-4"
+    - cron: "7 19 * * 0-4"
+    - cron: "37 19 * * 0-4"
+    - cron: "7 20 * * 0-4"
+    - cron: "37 20 * * 0-4"
+    - cron: "7 21 * * 0-4"
   workflow_dispatch:
 
 permissions:
@@ -22,7 +23,21 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  calendar:
+    runs-on: ubuntu-latest
+    outputs:
+      allowed: ${{ steps.calendar.outputs.allowed }}
+    steps:
+      - id: calendar
+        run: |
+          if [[ "$(TZ=Asia/Seoul date +%u)" -le 5 ]]; then
+            echo "allowed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "allowed=false" >> "$GITHUB_OUTPUT"
+          fi
   guard:
+    needs: calendar
+    if: needs.calendar.outputs.allowed == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 360
     steps:

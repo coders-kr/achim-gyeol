@@ -73,8 +73,8 @@ app:
     enabled: ${NEWS_PIPELINE_ENABLED:false}
     generate-on-startup: ${NEWS_GENERATE_ON_STARTUP:false}
     # 새벽 매시 수집 후 06:00 최종화를 거쳐 07:30 정시 발송한다.
-    collection-cron: ${NEWS_COLLECTION_CRON:${NEWS_GENERATION_CRON:0 0 0-5 * * *}}
-    finalization-cron: ${NEWS_FINALIZATION_CRON:0 0 6 * * *}
+    collection-cron: ${NEWS_COLLECTION_CRON:${NEWS_GENERATION_CRON:0 0 0-5 * * MON-FRI}}
+    finalization-cron: ${NEWS_FINALIZATION_CRON:0 0 6 * * MON-FRI}
     finalization-time: "${NEWS_FINALIZATION_TIME:06:00}"
     max-candidates-per-category: ${NEWS_MAX_CANDIDATES_PER_CATEGORY:14}
     max-articles-per-category: ${NEWS_MAX_ARTICLES_PER_CATEGORY:160}

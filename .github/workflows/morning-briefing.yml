@@ -7,9 +7,10 @@ on:
     # The 06:00 run guarantees finalization after scale-to-zero. The 06:15
     # watchdog leaves a 75-minute scheduling buffer, keeps the service warm,
     # and releases the final dispatch at 07:30.
-    - cron: "0 15 * * *"
-    - cron: "0 21 * * *"
-    - cron: "15 21 * * *"
+    # UTC Sunday–Thursday corresponds to KST Monday–Friday mornings.
+    - cron: "0 15 * * 0-4"
+    - cron: "0 21 * * 0-4"
+    - cron: "15 21 * * 0-4"
   workflow_dispatch:
     inputs:
       operation:
@@ -45,7 +46,23 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  calendar:
+    runs-on: ubuntu-latest
+    outputs:
+      allowed: ${{ steps.calendar.outputs.allowed }}
+    steps:
+      - id: calendar
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          if [[ "$EVENT_NAME" == "workflow_dispatch" || "$(TZ=Asia/Seoul date +%u)" -le 5 ]]; then
+            echo "allowed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "allowed=false" >> "$GITHUB_OUTPUT"
+          fi
   operate:
+    needs: calendar
+    if: needs.calendar.outputs.allowed == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 100
     steps:
@@ -64,10 +81,10 @@ jobs:
             else
               final_delivery=false
             fi
-          elif [[ "$SCHEDULE" == "0 15 * * *" || "$SCHEDULE" == "0 21 * * *" ]]; then
+          elif [[ "$SCHEDULE" == "0 15 * * 0-4" || "$SCHEDULE" == "0 21 * * 0-4" ]]; then
             operation="generate"
             final_delivery=false
-          elif [[ "$SCHEDULE" == "15 21 * * *" ]]; then
+          elif [[ "$SCHEDULE" == "15 21 * * 0-4" ]]; then
             operation="run"
             final_delivery=true
           else
